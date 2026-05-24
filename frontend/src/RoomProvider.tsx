@@ -8,7 +8,7 @@ import { CopyButton } from "./components/ui/CopyButton";
 import { Button } from "./components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router";
-import { Loader2 } from "lucide-react";
+import { ArrowRight, DoorOpen, Loader2, Palette, User } from "lucide-react";
 import Logo from "./components/ui/Logo";
 import type { FetchResponse } from "./types/globaltype";
 const RoomProvider = () => {
@@ -74,175 +74,225 @@ const RoomProvider = () => {
     });
   };
 
+  const formInputClass =
+    "h-12 rounded-lg border-input bg-background text-foreground placeholder:text-muted-foreground shadow-xs focus-visible:border-ring focus-visible:ring-ring/50";
+  const actionButtonClass =
+    "h-12 w-full cursor-pointer rounded-lg font-semibold shadow-xs";
+
   return (
-    <div className="min-h-screen w-full bg-[#020617] relative">
+    <main className="dark bg-background text-foreground min-h-screen w-full overflow-hidden selection:bg-chart-2/30">
       <div
-        className="flex flex-col min-h-screen items-center pt-25"
+        className="pointer-events-none fixed inset-0 opacity-[0.15]"
         style={{
-          background: "#020617",
           backgroundImage: `
-            linear-gradient(to right, rgba(71,85,105,0.3) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(71,85,105,0.3) 1px, transparent 1px),
-            radial-gradient(circle at 50% 50%, rgba(139,92,246,0.15) 0%, transparent 70%)
+            repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px)
           `,
-          backgroundSize: "32px 32px, 32px 32px, 100% 100%",
         }}
-      >
-        <Logo className="pt-6 absolute   top-4 left-4 " />
+      />
+      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-8">
+        <header className="flex items-center justify-between">
+          <Logo className="text-4xl sm:text-5xl" />
+          <div className="border-border bg-muted/50 text-muted-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold uppercase sm:flex">
+            <span className="bg-primary h-2 w-2 rounded-full" />
+            Live code rooms
+          </div>
+        </header>
 
-        <Tabs
-          defaultValue="create"
-          className="w-full max-w-5xl mx-auto px-4 max-sm:mt-20"
-        >
-          <TabsList className=" h-auto mx-auto mb-5 md:mb-10 py-1 font-notdisplay flex items-center justify-center flex-wrap  bg-slate-700 ">
-            <TabsTrigger
-              value="create"
-              className="cursor-pointer text-slate-200 data-[state=active]:bg-slate-500"
-            >
-              Create Room
-            </TabsTrigger>
+        <section className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1fr_1fr] lg:gap-12 lg:py-4">
+          <div className="max-w-2xl">
+            <h1 className="text-foreground text-5xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
+              Spin up a shared code desk.
+            </h1>
+            <p className="text-muted-foreground mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
+              Create a room, invite collaborators, choose a language, and run
+              code together in a focused workspace.
+            </p>
 
-            <TabsTrigger
-              value="join"
-              className="cursor-pointer text-slate-200 data-[state=active]:bg-slate-500"
-            >
-              Join Room
-            </TabsTrigger>
-          </TabsList>
+          </div>
 
-          <TabsContent value="create">
-            <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 text-2xl mx-auto min-h-[45vh] bg-slate-700 border-gray-600">
-              <CardHeader>
-                <CardTitle className="font-notdisplay text-xl md:text-2xl font-medium text-slate-200">
-                  Create new room
-                </CardTitle>
-              </CardHeader>
+          <Tabs defaultValue="create" className="w-full">
+            <TabsList className="border-border bg-muted/50 text-muted-foreground mx-auto mb-5 grid h-11 w-full max-w-md grid-cols-2 rounded-lg border p-1 shadow-xs">
+              <TabsTrigger
+                value="create"
+                className="data-[state=active]:bg-background data-[state=active]:text-foreground cursor-pointer rounded-md text-sm font-semibold"
+              >
+                Create Room
+              </TabsTrigger>
 
-              <CardContent className="grid gap-6 font-notdisplay">
-                <form
-                  onSubmit={(e) => handleJoinSubmit(e, room)}
-                  className="grid gap-5 text-slate-200"
-                >
-                  <CopyButton
-                    text={room}
-                    className="text-base sm:text-lg font-notdisplay"
-                  />
+              <TabsTrigger
+                value="join"
+                className="data-[state=active]:bg-background data-[state=active]:text-foreground cursor-pointer rounded-md text-sm font-semibold"
+              >
+                Join Room
+              </TabsTrigger>
+            </TabsList>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="create-name" className="text-sm">
-                      Name
-                    </Label>
-                    <Input
-                      id="create-name"
-                      value={name}
-                      required
-                      onChange={handlenameChange}
-                      placeholder="Enter your preferred name"
-                      className="text-sm placeholder:text-base bg-slate-600 border-slate-600 placeholder:text-slate-400"
-                    />
-                  </div>
+            <TabsContent value="create" className="min-h-[32rem]">
+              <Card className="border-border bg-card text-card-foreground mx-auto flex min-h-[32rem] w-full max-w-md flex-col overflow-hidden rounded-xl shadow-sm">
+                <CardHeader className="space-y-2">
+                  <CardTitle className="text-card-foreground text-2xl font-bold">
+                    Create room
+                  </CardTitle>
+                  <p className="text-muted-foreground text-sm leading-6">
+                    Your room ID is ready to share. Add your name before
+                    entering.
+                  </p>
+                </CardHeader>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="create-color" className="text-sm">
-                      Preferred Color
-                    </Label>
-                    <Input
-                      id="create-color"
-                      type="color"
-                      className="w-20 sm:w-16 cursor-pointer rounded-full bg-slate-600 border-slate-600"
-                      value={color}
-                      onChange={handlecolorChange}
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isPending}
-                    className="w-3/4 mx-auto cursor-pointer text-slate-200 bg-gray-900 hover:bg-gray-800"
+                <CardContent className="grid flex-1 gap-6">
+                  <form
+                    onSubmit={(e) => handleJoinSubmit(e, room)}
+                    className="text-card-foreground grid h-full grid-rows-[auto_auto_auto_1fr] gap-5"
                   >
-                    {isPending ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      "Create Room"
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                    <CopyButton text={room} className="text-base" />
 
-          <TabsContent value="join">
-            <Card className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 text-2xl mx-auto min-h-[45vh] bg-slate-700 border-gray-600">
-              <CardHeader>
-                <CardTitle className="font-notdisplay font-medium text-slate-200">
-                  Join existing Room
-                </CardTitle>
-              </CardHeader>
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="create-name"
+                        className="text-card-foreground flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <User className="text-muted-foreground size-4" />
+                        Name
+                      </Label>
+                      <Input
+                        id="create-name"
+                        value={name}
+                        required
+                        onChange={handlenameChange}
+                        placeholder="Enter your preferred name"
+                        className={formInputClass}
+                      />
+                    </div>
 
-              <CardContent className="grid gap-6 font-notdisplay">
-                <form
-                  onSubmit={(e) => handleJoinSubmit(e, joinroom)}
-                  className="grid gap-5 text-slate-200"
-                >
-                  <div className="grid gap-2">
-                    <Label htmlFor="join-room" className="text-sm">
-                      Room ID
-                    </Label>
-                    <Input
-                      id="join-room"
-                      value={joinroom}
-                      required
-                      onChange={(e) => setjoinRoom(e.target.value)}
-                      placeholder="Enter room ID"
-                      className="text-sm placeholder:text-base bg-slate-600 border-slate-600 placeholder:text-slate-400"
-                    />
-                  </div>
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="create-color"
+                        className="text-card-foreground flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <Palette className="text-muted-foreground size-4" />
+                        Preferred Color
+                      </Label>
+                      <Input
+                        id="create-color"
+                        type="color"
+                        className="border-input bg-background h-12 w-20 cursor-pointer rounded-lg p-1"
+                        value={color}
+                        onChange={handlecolorChange}
+                      />
+                    </div>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="join-name" className="text-sm">
-                      Name
-                    </Label>
-                    <Input
-                      id="join-name"
-                      value={name}
-                      required
-                      onChange={handlenameChange}
-                      placeholder="Enter your preferred name"
-                      className="text-sm placeholder:text-base bg-slate-600 border-slate-600 placeholder:text-slate-400"
-                    />
-                  </div>
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      className={`${actionButtonClass} self-end`}
+                    >
+                      {isPending ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        <>
+                          Create Room
+                          <ArrowRight className="size-4" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="join-color" className="text-sm">
-                      Preferred Color
-                    </Label>
-                    <Input
-                      id="join-color"
-                      type="color"
-                      className="w-20 sm:w-16 cursor-pointer rounded-full bg-slate-600 border-slate-600"
-                      value={color}
-                      onChange={handlecolorChange}
-                    />
-                  </div>
+            <TabsContent value="join" className="min-h-[32rem]">
+              <Card className="border-border bg-card text-card-foreground mx-auto flex min-h-[32rem] w-full max-w-md flex-col overflow-hidden rounded-xl shadow-sm">
+                <CardHeader className="space-y-2">
+                  <CardTitle className="text-card-foreground text-2xl font-bold">
+                    Join room
+                  </CardTitle>
+                  <p className="text-muted-foreground text-sm leading-6">
+                    Paste a room ID from your teammate and enter with your own
+                    identity.
+                  </p>
+                </CardHeader>
 
-                  <Button
-                    type="submit"
-                    disabled={isPending}
-                    className="w-3/4 mx-auto cursor-pointer text-slate-200 bg-gray-900 hover:bg-gray-800"
+                <CardContent className="grid flex-1 gap-6">
+                  <form
+                    onSubmit={(e) => handleJoinSubmit(e, joinroom)}
+                    className="text-card-foreground grid h-full grid-rows-[auto_auto_auto_1fr] gap-5"
                   >
-                    {isPending ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      "Join Room"
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="join-room"
+                        className="text-card-foreground flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <DoorOpen className="text-muted-foreground size-4" />
+                        Room ID
+                      </Label>
+                      <Input
+                        id="join-room"
+                        value={joinroom}
+                        required
+                        onChange={(e) => setjoinRoom(e.target.value)}
+                        placeholder="Enter room ID"
+                        className={formInputClass}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="join-name"
+                        className="text-card-foreground flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <User className="text-muted-foreground size-4" />
+                        Name
+                      </Label>
+                      <Input
+                        id="join-name"
+                        value={name}
+                        required
+                        onChange={handlenameChange}
+                        placeholder="Enter your preferred name"
+                        className={formInputClass}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <Label
+                        htmlFor="join-color"
+                        className="text-card-foreground flex items-center gap-2 text-sm font-semibold"
+                      >
+                        <Palette className="text-muted-foreground size-4" />
+                        Preferred Color
+                      </Label>
+                      <Input
+                        id="join-color"
+                        type="color"
+                        className="border-input bg-background h-12 w-20 cursor-pointer rounded-lg p-1"
+                        value={color}
+                        onChange={handlecolorChange}
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      className={`${actionButtonClass} self-end`}
+                    >
+                      {isPending ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        <>
+                          Join Room
+                          <ArrowRight className="size-4" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </section>
       </div>
-    </div>
+    </main>
   );
 };
 

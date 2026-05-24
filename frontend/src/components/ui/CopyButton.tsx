@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useCopyToClipboard } from "@/hooks/CopyToClipboard";
 import { cn } from "../../lib/utils";
+import { Check, Copy } from "lucide-react";
 
 export function CopyButton({
   text,
@@ -18,18 +19,21 @@ export function CopyButton({
   };
 
   return (
-    <div className={cn("flex items-center gap-2 ", className)}>
-      <pre className="flex-1 bg-slate-600 p-2 rounded text-slate-400 cursor-not-allowed">
+    <div className={cn("flex items-stretch gap-2", className)}>
+      <pre className="border-border bg-background text-foreground min-w-0 flex-1 overflow-hidden rounded-lg border px-3 py-3 font-mono text-sm shadow-xs">
         {text}
       </pre>
       <Button
+        type="button"
         onClick={handleCopy}
         className={cn(
-          "cursor-pointer hover:bg-gray-800 bg-gray-900",
+          "border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 h-auto cursor-pointer rounded-lg border px-3",
           className2,
         )}
+        aria-label="Copy room ID"
       >
-        {isCopied ? "Copied!" : "Copy"}
+        {isCopied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        <span className="hidden sm:inline">{isCopied ? "Copied" : "Copy"}</span>
       </Button>
     </div>
   );

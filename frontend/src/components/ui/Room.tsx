@@ -25,8 +25,10 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import Outputbox from "./Output";
 import { FILE_MAP } from "../../constants/filename";
 import { setOutput } from "@/features/code";
+import { Users, X } from "lucide-react";
+import Logo from "./Logo";
 const Room = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const notify = (text: string) => toast(text);
   const language = useStorage((root) => root.codeDetails.language);
   const updateLanguage = useMutation(({ storage }, newLanguage: string) => {
@@ -43,8 +45,8 @@ const Room = () => {
     if (event.type == "USER_LEFT") {
       notify(`${event.name} left the room`);
     }
-    if(event.type == "CODE_OUTPUT"){
-      dispatch(setOutput({...event.name}))
+    if (event.type == "CODE_OUTPUT") {
+      dispatch(setOutput({ ...event.name }));
     }
   });
   const me = useSelf();
@@ -72,25 +74,23 @@ const Room = () => {
     <SelectItem
       key={key}
       value={key}
-      className="bg-slate-700  text-slate-200 hover:bg-slate-600 focus:bg-slate-500"
+      className="bg-popover text-popover-foreground hover:bg-accent focus:bg-accent"
     >
       {key}
     </SelectItem>
   ));
   return (
-    <div className="min-h-screen w-full bg-[#020617] relative">
+    <main className="dark bg-background text-foreground min-h-screen w-full overflow-hidden selection:bg-chart-2/30">
       <div
-        className="flex flex-col md:right-10 lg:top-4 right-4 top-4 min-h-screen items-center pt-25"
+        className="pointer-events-none fixed inset-0 opacity-[0.15]"
         style={{
-          background: "#020617",
           backgroundImage: `
-        linear-gradient(to right, rgba(71,85,105,0.15) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(71,85,105,0.15) 1px, transparent 1px),
-        radial-gradient(circle at 50% 50%, rgba(139,92,246,0.08) 0%, transparent 70%)
-      `,
-          backgroundSize: "32px 32px, 32px 32px, 100% 100%",
+            repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px)
+          `,
         }}
-      >
+      />
+      <div className="relative flex min-h-screen flex-col px-4 py-4 sm:px-6">
         <ToastContainer
           position="top-right"
           autoClose={1000}
@@ -105,7 +105,26 @@ const Room = () => {
           transition={Bounce}
         />
         <Loader variable={language as string} />
-        <div className="flex h-screen md:mt-1 gap-10 lg:m-0 w-full  mb-5 flex-col md:flex-row">
+        <header className="mb-5 flex items-center justify-between gap-3">
+          <Logo className="text-2xl sm:text-3xl" />
+          <div className="flex items-center gap-3">
+            <div className="border-border bg-muted/50 text-card-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium tracking-tight md:flex">
+              <span className="bg-primary size-1.5 rounded-full" />
+              <span className="text-muted-foreground">Room</span>
+              <span className="text-foreground font-mono">{id}</span>
+            </div>
+            <button
+              type="button"
+              className="border-border bg-accent text-accent-foreground hover:bg-accent/80 flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border shadow-xs transition"
+              onClick={() => setIsHovering(true)}
+              aria-label="Open participants"
+            >
+              <Users className="size-4.5" />
+            </button>
+          </div>
+        </header>
+
+        <div className="grid flex-1 gap-5 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,0.72fr)]">
           <CodeEditor handleMove={handleMove} handleLeave={handleLeave} />
           <Outputbox codeObject={codeSelector} />
         </div>
@@ -122,109 +141,98 @@ const Room = () => {
           );
         })}
 
-        <div className="absolute  md:right-7 lg:top-5  right-4 top-4">
-          <div
-            className={`absolute right-0 hover:bg-slate-800 top-0 w-12 h-12  bg-slate-900  text-white rounded-full shadow-md 
-                flex items-center justify-center cursor-pointer transition-all duration-300
-                ${isHovering ? "opacity-0 pointer-events-none scale-90" : "opacity-100 scale-100"}`}
-            onClick={() => setIsHovering(true)}
-          >
-            <img
-              src="/group.svg"
-              alt="Group Icon"
-              width={26}
-              height={26}
-              className="select-none text-white"
-              onContextMenu={(e) => e.preventDefault()}
-            />
+        <div
+          className={`fixed inset-0 z-[70] bg-black/40 backdrop-blur-xs transition-opacity duration-300 ${
+            isHovering ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+          onClick={() => setIsHovering(false)}
+        />
+        <aside
+          className={`border-border bg-card text-card-foreground fixed top-4 right-4 z-[80] flex max-h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-sm flex-col overflow-hidden rounded-xl border shadow-2xl transition-all duration-300 sm:top-6 sm:right-6 ${
+            isHovering
+              ? "translate-x-0 scale-100 opacity-100"
+              : "pointer-events-none translate-x-4 scale-95 opacity-0"
+          }`}
+        >
+          <div className="border-border flex items-center justify-between border-b px-5 py-4">
+            <div className="flex items-center gap-2">
+              <Users className="text-muted-foreground size-4" />
+              <span className="text-card-foreground text-sm font-semibold">
+                Participants
+              </span>
+              <span className="bg-muted text-muted-foreground ml-1.5 rounded-md px-2 py-0.5 text-xs font-medium tabular-nums">
+                {(others?.length || 0) + 1}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-lg p-1.5 transition"
+              onClick={() => setIsHovering(false)}
+              aria-label="Close participants"
+            >
+              <X className="size-4" />
+            </button>
           </div>
 
-     <div
-  className={`absolute right-0 top-0 z-999999 bg-slate-800 rounded-xl shadow-lg 
-  max-sm:w-[75vw] max-lg:w-[40vw] w-[80vw] lg:w-96 lg:h-[50vh]
-  transition-all duration-500 ease-in-out
-  ${isHovering ? "opacity-100 translate-y-5" : "opacity-0 -translate-y-4 pointer-events-none"}
-  overflow-y-auto no-scrollbar`}
->
-
-<div className="flex justify-end p-3 bg-transparent">
-              <img
-                src="/cross.svg"
-                alt="Close"
-                width={28}
-                height={28}
-                className="cursor-pointer select-none hover:scale-110 transition-transform "
-                onClick={() => setIsHovering(false)}
-              />
-            </div>
-
-<div className="flex flex-col items-center px-4 h-full bg-transparent">
-              <img
-                src="/group.svg"
-                alt="Logo"
-                width={60}
-                height={60}
-                className="select-none mb-4 "
-              />
-
-              <CopyButton
-                className="w-24 mb-6 "
-                className2="hover:bg-slate-500"
-                text={id || "not found"}
-              />
-
-              <div className="w-full   text-center space-y-2  text-slate-400 font-notdisplay no-scrollbar">
-                <h2>Total participants: {(others?.length || 0) + 1}</h2>
-                <div className="flex  items-center justify-around pb-4">
-                  <div className="font-semibold shrink-0">Current Language</div>
-                  <Select
-                    value={language || ""}
-                    onValueChange={(e) => updateLanguage(e)}
-                  >
-                    <SelectTrigger className="w-[150px] bg-slate-600 text-slate-200 border border-slate-500">
-                      <SelectValue placeholder="Select a language" />
-                    </SelectTrigger>
-
-                    <SelectContent className="bg-slate-700 text-slate-200 z-99999999 border border-slate-500">
-                      {rendered}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="py-2 px-3 bg-slate-700 text-slate-400 dark:bg-gray-700 rounded-lg flex items-center  gap-5 text-sm font-medium  dark:text-gray-200">
-                  <h1>{`${me?.info?.name} (you)`}</h1>
-                  <div
-                    style={{
-                      background: me?.info?.color,
-                    }}
-                    className="w-7 h-7 rounded-full border border-neutral-500"
-                  ></div>
-                </div>
-                {others?.length > 0 ? (
-                  others.map((other, idx) => (
-                    <div
-                      key={idx}
-                      className="py-2 mb-5 px-3 bg-slate-700 text-slate-400 dark:bg-gray-700 rounded-lg flex items-center gap-5  text-sm font-medium dark:text-gray-200"
-                    >
-                      <h1>{other?.info?.name || "Unknown"}</h1>
-                      <div
-                        style={{
-                          background: other?.info?.color,
-                        }}
-                        className="w-7 h-7 rounded-full border border-neutral-500"
-                      ></div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-slate-400 italic text-sm mt-4 pb-5">
-                    No other users found
-                  </div>
-                )}
+          <div className="no-scrollbar flex-1 space-y-4 overflow-y-auto p-5">
+            <div className="border-border bg-background rounded-xl border p-4">
+              <div className="text-muted-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
+                Language
               </div>
+              <Select
+                value={language || ""}
+                onValueChange={(e) => updateLanguage(e)}
+              >
+                <SelectTrigger className="border-input bg-background text-foreground h-10 w-full rounded-lg border text-sm">
+                  <SelectValue placeholder="Select a language" />
+                </SelectTrigger>
+
+                <SelectContent className="border-border bg-popover text-popover-foreground z-[90] border">
+                  {rendered}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <CopyButton text={id || "not found"} className="w-full" />
+
+            <div className="text-card-foreground space-y-2">
+              <div className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    style={{ background: me?.info?.color }}
+                    className="border-border size-7 shrink-0 rounded-full border"
+                  />
+                  <span className="text-foreground truncate">{me?.info?.name}</span>
+                  <span className="text-muted-foreground text-xs">(you)</span>
+                </div>
+              </div>
+              {others?.length > 0 ? (
+                others.map((other, idx) => (
+                  <div
+                    key={idx}
+                    className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        style={{ background: other?.info?.color }}
+                        className="border-border size-7 shrink-0 rounded-full border"
+                      />
+                      <span className="text-foreground truncate">
+                        {other?.info?.name || "Unknown"}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-8 text-center text-sm">
+                  No other users here yet
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
-    </div>
+    </main>
   );
 };
 

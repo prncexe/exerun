@@ -1,6 +1,5 @@
-import { Editor, loader } from "@monaco-editor/react";
+import { Editor, loader, type OnMount } from "@monaco-editor/react";
 import { useEffect, useRef, useState, useTransition } from "react";
-import * as monaco from "monaco-editor";
 import { updateHW } from "../../features/heightWidth";
 import { setOutput } from "../../features/code";
 import type { Output } from "@/types/globaltype";
@@ -28,7 +27,7 @@ function CodeEditor({
   const dispatch = useDispatch();
   const reference = useRef<HTMLDivElement>(null);
 
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
 
   const [UndoRedoState, setUndoRedoState] = useState<{
     canUndo: boolean;

@@ -20,7 +20,7 @@ export function CopyButton({
 
   return (
     <div className={cn("flex items-stretch gap-2", className)}>
-      <pre className="border-border bg-background text-foreground min-w-0 flex-1 overflow-hidden rounded-lg border px-3 py-3 font-mono text-sm shadow-xs">
+      <pre className="border-border bg-background text-foreground min-w-0 flex-1 overflow-hidden rounded-lg border px-3 py-3 font-mono text-sm md:text-base shadow-xs">
         {text}
       </pre>
       <Button

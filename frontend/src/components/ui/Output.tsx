@@ -6,26 +6,26 @@ const Outputbox = ({ codeObject }: { codeObject: Output }) => {
   return (
     <section className="border-border bg-card text-card-foreground flex min-h-[44vh] flex-col overflow-hidden rounded-lg border shadow-lg lg:min-h-0">
       <div className="border-border bg-muted/50 flex min-h-12 items-center justify-between border-b px-4">
-        <div className="text-foreground flex items-center gap-2 text-sm font-semibold">
+        <div className="text-foreground flex items-center gap-2 text-sm font-semibold md:text-base">
           <Terminal className="text-muted-foreground size-4" />
           Output
         </div>
         {executionTime !== null && (
-          <div className="border-border bg-background text-muted-foreground flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs">
+          <div className="border-border bg-background text-muted-foreground flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs md:text-sm">
             <Hash className="size-3" />
             {executionTime}ms
           </div>
         )}
       </div>
 
-      <div className="no-scrollbar bg-background text-foreground flex-1 overflow-auto p-5 font-mono text-sm leading-relaxed">
-        <div className="text-muted-foreground/60 mb-6 flex items-center gap-2 text-xs">
+      <div className="no-scrollbar bg-background text-foreground flex-1 overflow-auto p-5 font-mono text-sm md:text-base leading-relaxed">
+        <div className="text-muted-foreground/60 mb-6 flex items-center gap-2 text-xs md:text-sm">
           <span className="bg-muted text-muted-foreground rounded-md px-2 py-0.5 font-semibold">$</span>
           exerun --latest
         </div>
 
         {!stdout && !stderr && !exception && !error && (
-          <div className="border-border text-muted-foreground mt-6 rounded-xl border border-dashed px-4 py-10 text-center font-sans text-sm">
+          <div className="border-border text-muted-foreground mt-6 rounded-xl border border-dashed px-4 py-10 text-center font-sans text-sm md:text-base">
             <Terminal className="text-muted-foreground/30 mx-auto mb-3 size-8" />
             <p className="font-medium">No output yet</p>
             <p className="text-muted-foreground/70 mt-1">
@@ -37,7 +37,7 @@ const Outputbox = ({ codeObject }: { codeObject: Output }) => {
         <div className="mt-4 space-y-5">
           {stdout && (
             <div>
-              <span className="text-muted-foreground mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
+              <span className="text-muted-foreground mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider md:text-sm">
                 <span className="bg-muted size-1 rounded-full" />
                 stdout
               </span>
@@ -49,7 +49,7 @@ const Outputbox = ({ codeObject }: { codeObject: Output }) => {
 
           {stderr && (
             <div>
-              <span className="text-destructive mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
+              <span className="text-destructive mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider md:text-sm">
                 <span className="bg-destructive size-1 rounded-full" />
                 stderr
               </span>
@@ -61,7 +61,7 @@ const Outputbox = ({ codeObject }: { codeObject: Output }) => {
 
           {exception && (
             <div className="border-border bg-accent/30 rounded-xl border p-4">
-              <span className="text-muted-foreground mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
+              <span className="text-muted-foreground mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider md:text-sm">
                 <span className="bg-muted-foreground size-1 rounded-full" />
                 exception
               </span>
@@ -71,7 +71,7 @@ const Outputbox = ({ codeObject }: { codeObject: Output }) => {
 
           {error && (
             <div className="border-destructive/50 bg-destructive/5 rounded-xl border p-4">
-              <span className="text-destructive mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider">
+              <span className="text-destructive mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider md:text-sm">
                 <span className="bg-destructive size-1 rounded-full" />
                 error
               </span>

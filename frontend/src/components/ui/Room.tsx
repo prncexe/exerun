@@ -106,9 +106,9 @@ const Room = () => {
         />
         <Loader variable={language as string} />
         <header className="mb-5 flex items-center justify-between gap-3">
-          <Logo className="text-2xl sm:text-3xl" />
+          <Logo className="text-3xl sm:text-4xl" />
           <div className="flex items-center gap-3">
-            <div className="border-border bg-muted/50 text-card-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium tracking-tight md:flex">
+            <div className="border-border bg-muted/50 text-card-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium tracking-tight md:flex md:text-base">
               <span className="bg-primary size-1.5 rounded-full" />
               <span className="text-muted-foreground">Room</span>
               <span className="text-foreground font-mono">{id}</span>
@@ -124,7 +124,7 @@ const Room = () => {
           </div>
         </header>
 
-        <div className="grid flex-1 gap-5 lg:grid-cols-[minmax(0,1.28fr)_minmax(360px,0.72fr)]">
+        <div className="grid flex-1 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(360px,1fr)]">
           <CodeEditor handleMove={handleMove} handleLeave={handleLeave} />
           <Outputbox codeObject={codeSelector} />
         </div>
@@ -176,14 +176,14 @@ const Room = () => {
 
           <div className="no-scrollbar flex-1 space-y-4 overflow-y-auto p-5">
             <div className="border-border bg-background rounded-xl border p-4">
-              <div className="text-muted-foreground mb-3 text-xs font-semibold uppercase tracking-wider">
+              <div className="text-muted-foreground mb-3 text-sm font-semibold uppercase tracking-wider">
                 Language
               </div>
               <Select
                 value={language || ""}
                 onValueChange={(e) => updateLanguage(e)}
               >
-                <SelectTrigger className="border-input bg-background text-foreground h-10 w-full rounded-lg border text-sm">
+                <SelectTrigger className="border-input bg-background text-foreground h-10 w-full rounded-lg border text-sm md:text-base">
                   <SelectValue placeholder="Select a language" />
                 </SelectTrigger>
 
@@ -196,21 +196,21 @@ const Room = () => {
             <CopyButton text={id || "not found"} className="w-full" />
 
             <div className="text-card-foreground space-y-2">
-              <div className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium">
+              <div className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium md:text-base">
                 <div className="flex items-center gap-3 min-w-0">
                   <div
                     style={{ background: me?.info?.color }}
                     className="border-border size-7 shrink-0 rounded-full border"
                   />
                   <span className="text-foreground truncate">{me?.info?.name}</span>
-                  <span className="text-muted-foreground text-xs">(you)</span>
+                  <span className="text-muted-foreground text-xs md:text-sm">(you)</span>
                 </div>
               </div>
               {others?.length > 0 ? (
                 others.map((other, idx) => (
                   <div
                     key={idx}
-                    className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium"
+                    className="border-border bg-background flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium md:text-base"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div
@@ -224,7 +224,7 @@ const Room = () => {
                   </div>
                 ))
               ) : (
-                <div className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-8 text-center text-sm">
+                <div className="border-border text-muted-foreground rounded-xl border border-dashed px-4 py-8 text-center text-sm md:text-base">
                   No other users here yet
                 </div>
               )}

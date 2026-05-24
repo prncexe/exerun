@@ -124,7 +124,7 @@ function CodeEditor({
 
   return (
     <>
-      <div className="border-border bg-card text-card-foreground flex min-h-[72vh] flex-col overflow-hidden rounded-lg border shadow-lg lg:min-h-0">
+      <div className="border-border bg-card text-card-foreground flex min-h-[60dvh] flex-col overflow-hidden rounded-lg border shadow-lg lg:min-h-0">
         <div className="border-border bg-muted flex min-h-14 items-center gap-3 border-b px-3 py-2 sm:px-4">
           <div className="flex items-center gap-2">
             <span className="bg-destructive h-3 w-3 rounded-full"></span>
@@ -157,7 +157,7 @@ function CodeEditor({
               <RotateCw className="size-4" />
             </button>
           </div>
-          <div className="border-border bg-background text-muted-foreground min-w-0 flex-1 truncate rounded-md border px-3 py-1.5 font-mono text-xs">
+            <div className="border-border bg-background text-muted-foreground min-w-0 flex-1 truncate rounded-md border px-3 py-1.5 font-mono text-sm">
             {filename}
           </div>
           <div className="flex justify-end">
@@ -170,7 +170,7 @@ function CodeEditor({
                 className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 cursor-pointer items-center gap-2 rounded-md px-4 text-sm font-bold transition"
               >
                 <Play className="fill-primary-foreground size-4" />
-                <span className="hidden sm:inline">Run</span>
+                <span className="hidden sm:inline text-sm font-bold">Run</span>
               </button>
             )}
           </div>

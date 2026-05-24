@@ -82,7 +82,7 @@ const RoomProvider = () => {
   return (
     <main className="dark bg-background text-foreground min-h-screen w-full overflow-hidden selection:bg-chart-2/30">
       <div
-        className="pointer-events-none fixed inset-0 opacity-[0.15]"
+        className="pointer-events-none fixed inset-0 opacity-[0.06] sm:opacity-[0.15]"
         style={{
           backgroundImage: `
             repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
@@ -90,25 +90,27 @@ const RoomProvider = () => {
           `,
         }}
       />
-      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-8">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-5 sm:px-8">
         <header className="flex items-center justify-between">
-          <Logo className="text-4xl sm:text-5xl" />
-          <div className="border-border bg-muted/50 text-muted-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold uppercase sm:flex">
-            <span className="bg-primary h-2 w-2 rounded-full" />
-            Live code rooms
+          <Logo className="text-3xl sm:text-5xl" />
+          <div className="flex items-center gap-2">
+            <span className="bg-primary block h-2 w-2 rounded-full sm:hidden" />
+            <div className="border-border bg-muted/50 text-muted-foreground hidden items-center gap-2 rounded-lg border px-4 py-2 text-xs font-semibold uppercase sm:flex">
+              <span className="bg-primary h-2 w-2 rounded-full" />
+              Live code rooms
+            </div>
           </div>
         </header>
 
-        <section className="grid flex-1 items-center gap-8 py-10 lg:grid-cols-[1fr_1fr] lg:gap-12 lg:py-4">
+        <section className="grid flex-1 items-center gap-6 py-6 lg:grid-cols-[1fr_1fr] lg:gap-12 lg:py-4">
           <div className="max-w-2xl">
-            <h1 className="text-foreground text-5xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
+            <h1 className="text-foreground text-4xl leading-[1.1] font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               Spin up a shared code desk.
             </h1>
-            <p className="text-muted-foreground mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
+            <p className="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed sm:mt-5 sm:text-lg">
               Create a room, invite collaborators, choose a language, and run
               code together in a focused workspace.
             </p>
-
           </div>
 
           <Tabs defaultValue="create" className="w-full">
